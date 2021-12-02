@@ -1,43 +1,31 @@
 package com.osstem.notice.domain.board;
 
-import com.osstem.notice.domain.user.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Getter
 @NoArgsConstructor
-public class Notice {
+@Getter
+public class Attachment {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long noticeId;
+    private Long attachmentId;
 
-    @OneToMany(mappedBy = "notice")
-    private List<Comment> comments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "notice")
-    private List<Attachment> attachments = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "notice_id", nullable = false)
+    private Notice notice;
 
     @Column(nullable = false)
-    private Long userId;
+    private String filePath;
 
     @Column(nullable = false)
-    private String title;
-
-    @Column(nullable = false)
-    private String content;
-
-    @Column
-    private Long view;
+    private String fileName;
 
     @CreatedDate
     private LocalDateTime created;

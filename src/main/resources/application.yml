@@ -1,20 +1,22 @@
 spring:
   datasource:
-    driver-class-name: org.h2.Driver
-    username: sa
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: root
     password:
+    url: "jdbc:mariadb://127.0.0.1:3306/notice"
   jpa:
-    database: h2
+    database: mysql
+    generate-ddl: true
     properties:
       ddl-auto: create
       hibernate:
         show_sql: true
         format_sql: true
-  h2:
-    console:
-      enabled: true
-      settings:
-        web-allow-others: true
+#  h2:
+#    console:
+#      enabled: true
+#      settings:
+#        web-allow-others: true
 
 logging:
   level:
