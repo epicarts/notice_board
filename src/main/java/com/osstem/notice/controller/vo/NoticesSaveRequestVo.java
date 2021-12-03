@@ -17,7 +17,7 @@ public class NoticesSaveRequestVo {
     @NotBlank(message = "제목은 필수 입니다.") // Bad Request
     private String title;
 
-    private Boolean notice = true;
+    private Boolean notice = false;
 
     private String content = "";
 
