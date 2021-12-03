@@ -2,14 +2,10 @@ package com.osstem.notice.controller.vo;
 
 
 import com.osstem.notice.domain.board.Notice;
-import com.sun.istack.NotNull;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 
 @Getter
 @RequiredArgsConstructor

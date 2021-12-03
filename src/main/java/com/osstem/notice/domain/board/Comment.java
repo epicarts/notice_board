@@ -1,20 +1,17 @@
 package com.osstem.notice.domain.board;
 
+import com.osstem.notice.domain.common.BaseTime;
 import com.osstem.notice.domain.common.BooleanToYNConverter;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.aspectj.weaver.ast.Not;
-import org.hibernate.annotations.SQLDelete;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @NoArgsConstructor
 @Getter
-public class Comment {
+public class Comment extends BaseTime {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,14 +29,22 @@ public class Comment {
 
     @Convert(converter = BooleanToYNConverter.class)
     @Column(nullable = false)
-    private Boolean isDelete;
+    private Boolean isDeleted;
 
     @Column
     private Long commentOriginId;
 
-    @CreatedDate
-    private LocalDateTime created;
+    @Builder
+    public Comment(Notice notice, String content, Long commentOriginId) {
+        this.notice = notice;
+        this.content = content;
+        this.isDeleted = false;
+        this.commentOriginId = commentOriginId;
+        this.userId = 1L;
+    }
 
-    @LastModifiedDate
-    private LocalDateTime updated;
+    public void deleteComment()
+    {
+        isDeleted = true;
+    }
 }
