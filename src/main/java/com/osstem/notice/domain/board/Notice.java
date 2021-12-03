@@ -33,10 +33,10 @@ public class Notice {
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20000)
     private String content;
 
-    @Column
+    @Column(nullable = false)
     private Long view;
 
     @CreatedDate

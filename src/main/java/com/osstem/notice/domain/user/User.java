@@ -21,17 +21,18 @@ public class User {
     @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
-//    @Column(nullable = false)
-//    private Boolean isDelete;
+    @Column(nullable = false, length = 50)
+    private String division;
 
     @Convert(converter = BooleanToYNConverter.class)
+    @Column(nullable = false)
     private Boolean isDelete;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 10)
     private Role role;
 
     @CreatedDate

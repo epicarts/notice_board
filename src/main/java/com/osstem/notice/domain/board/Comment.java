@@ -1,8 +1,10 @@
 package com.osstem.notice.domain.board;
 
+import com.osstem.notice.domain.common.BooleanToYNConverter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.aspectj.weaver.ast.Not;
+import org.hibernate.annotations.SQLDelete;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -28,11 +30,12 @@ public class Comment {
     @Column(nullable = false)
     private String content;
 
+    @Convert(converter = BooleanToYNConverter.class)
     @Column(nullable = false)
     private Boolean isDelete;
 
     @Column
-    private Boolean commentOriginId;
+    private Long commentOriginId;
 
     @CreatedDate
     private LocalDateTime created;
