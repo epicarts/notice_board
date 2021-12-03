@@ -1,6 +1,6 @@
 package com.osstem.notice.service;
 
-import com.osstem.notice.controller.vo.NoticesSaveRequestVo;
+import com.osstem.notice.controller.vo.NoticeSaveRequestVo;
 import com.osstem.notice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ public class NoticesService {
     private final UserRepository userRepository;
 
     @Transactional
-    public Long save(NoticesSaveRequestVo requestsVo) {
+    public Long save(NoticeSaveRequestVo requestsVo) {
         return userRepository.save(requestsVo.toEntity()).getNoticeId();
     }
 }

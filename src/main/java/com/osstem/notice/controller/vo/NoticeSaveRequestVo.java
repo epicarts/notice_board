@@ -13,7 +13,7 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @RequiredArgsConstructor
-public class NoticesSaveRequestVo {
+public class NoticeSaveRequestVo {
     @NotBlank(message = "제목은 필수 입니다.") // Bad Request
     private String title;
 
