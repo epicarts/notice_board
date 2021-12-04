@@ -1,13 +1,12 @@
 package com.osstem.notice.controller;
 
-import com.osstem.notice.controller.vo.CommentSaveRequestVo;
-import com.osstem.notice.controller.vo.NoticeSaveRequestVo;
+import com.osstem.notice.controller.vo.CreateCommentRequestVo;
 import com.osstem.notice.service.CommentService;
+import lombok.Builder;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -19,7 +18,17 @@ public class CommentApiController {
     private final CommentService commentService;
 
     @PostMapping
-    public Long create(@Valid @RequestBody CommentSaveRequestVo requestVo) {
-        return commentService.saveComment(requestVo);
+    @ResponseStatus(HttpStatus.CREATED)
+    public CreateCommentResponseDto create(@Valid @RequestBody CreateCommentRequestVo requestVo) {
+        Long commentId = commentService.saveComment(requestVo);
+        return CreateCommentResponseDto.builder()
+                .commentId(commentId)
+                .build();
+    }
+
+    @Data
+    @Builder
+    static class CreateCommentResponseDto {
+        private Long commentId;
     }
 }

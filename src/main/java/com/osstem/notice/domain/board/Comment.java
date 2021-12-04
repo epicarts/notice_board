@@ -31,20 +31,19 @@ public class Comment extends BaseTime {
     @Column(nullable = false)
     private Boolean isDeleted;
 
-    @Column
-    private Long commentOriginId;
+    @Column(nullable = false)
+    private Long parentCommentId;
 
     @Builder
-    public Comment(Notice notice, String content, Long commentOriginId) {
+    public Comment(Notice notice, String content, Long parentCommentId) {
         this.notice = notice;
         this.content = content;
         this.isDeleted = false;
-        this.commentOriginId = commentOriginId;
+        this.parentCommentId = parentCommentId;
         this.userId = 1L;
     }
 
-    public void deleteComment()
-    {
+    public void deleteComment() {
         isDeleted = true;
     }
 }
