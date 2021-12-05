@@ -27,7 +27,7 @@ public class CommentService {
                     .orElseThrow(() -> new IllegalArgumentException("해당 부모 댓글이 없습니다. parentId=" + parentId)); // 400 Bad Request
         }
 
-        Comment comment = Comment.createNotice(notice, content, parentId);
+        Comment comment = Comment.createComment(notice, content, parentId);
         return commentRepository.save(comment).getCommentId();
     }
 

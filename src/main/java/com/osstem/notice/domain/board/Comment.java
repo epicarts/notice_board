@@ -32,7 +32,7 @@ public class Comment extends BaseTime {
     @Column(nullable = false)
     private Long parentCommentId;
 
-    public static Comment createNotice(Notice notice, String content, Long parentCommentId) {
+    public static Comment createComment(Notice notice, String content, Long parentCommentId) {
         Comment comment = new Comment();
 
         comment.setNotice(notice);
