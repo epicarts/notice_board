@@ -45,11 +45,17 @@ public class InitDb {
             Comment comment1 = Comment.createComment(notice, "댓글입니다", 0L);
             commentRepository.save(comment1);
 
-            Comment comment2 = Comment.createComment(notice, "대댓글입니다1", 1L);
+            Comment comment2 = Comment.createComment(notice, "대댓글입니다1", comment1.getCommentId());
             commentRepository.save(comment2);
 
-            Comment comment3 = Comment.createComment(notice, "대댓글입니다2", 1L);
+            Comment comment3 = Comment.createComment(notice, "대댓글입니다2", comment1.getCommentId());
             commentRepository.save(comment3);
+
+            Comment comment4 = Comment.createComment(notice, "댓글입니다222", 0L);
+            commentRepository.save(comment4);
+
+            Comment comment5 = Comment.createComment(notice, "대댓글입니다", comment4.getCommentId());
+            commentRepository.save(comment5);
         }
 
         public void dbInit2() {
@@ -62,10 +68,10 @@ public class InitDb {
             Comment comment1 = Comment.createComment(notice, "홍길동 댓글입니다.", 0L);
             commentRepository.save(comment1);
 
-            Comment comment2 = Comment.createComment(notice, "홍길동 대댓글입니다1", 1L);
+            Comment comment2 = Comment.createComment(notice, "홍길동 대댓글입니다1", comment1.getCommentId());
             commentRepository.save(comment2);
 
-            Comment comment3 = Comment.createComment(notice, "홍길동 대댓글입니다2", 1L);
+            Comment comment3 = Comment.createComment(notice, "홍길동 대댓글입니다2", comment1.getCommentId());
             commentRepository.save(comment3);
         }
     }
