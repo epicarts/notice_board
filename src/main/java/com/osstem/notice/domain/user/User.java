@@ -1,18 +1,21 @@
 package com.osstem.notice.domain.user;
 
+import com.osstem.notice.domain.common.BaseTime;
 import com.osstem.notice.domain.common.BooleanToYNConverter;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
-@Getter
+@Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class User {
+public class User extends BaseTime {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,10 +38,15 @@ public class User {
     @Column(nullable = false, length = 10)
     private Role role;
 
-    @CreatedDate
-    private LocalDateTime created;
+    public static User createUser(String name, String email, String division, Role role) {
+        User user = new User();
 
-    @LastModifiedDate
-    private LocalDateTime updated;
+        user.setName(name);
+        user.setEmail(email);
+        user.setDivision(division);
+        user.setRole(role);
+
+        return user;
+    }
 }
 
