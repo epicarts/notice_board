@@ -23,10 +23,6 @@ public class CreateNoticeRequestVo {
     private String content = "";
 
     public Notice toEntity() {
-        return Notice.builder()
-                .title(title)
-                .content(content)
-                .isNotice(notice)
-                .build();
+        return Notice.createNotice(this.title, this.content, this.notice);
     }
 }

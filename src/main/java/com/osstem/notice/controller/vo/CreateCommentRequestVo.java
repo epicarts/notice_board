@@ -26,10 +26,6 @@ public class CreateCommentRequestVo {
     private Long parentId = 0L;
 
     public Comment toEntity(Notice noticeEntity) {
-        return Comment.builder()
-                .notice(noticeEntity)
-                .content(this.content)
-                .parentCommentId(this.parentId)
-                .build();
+        return Comment.createNotice(noticeEntity, this.content, this.parentId);
     }
 }

@@ -2,24 +2,18 @@ package com.osstem.notice.domain.board;
 
 import com.osstem.notice.domain.common.BaseTime;
 import com.osstem.notice.domain.common.BooleanToYNConverter;
-import com.osstem.notice.domain.user.User;
-import lombok.Builder;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.util.Assert;
+import lombok.Setter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Getter
-@NoArgsConstructor
+@Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)  // 외부 패키지에서 new Notice()를 접근하지 못하게 함. Setter 노출 위험요소 제거
 public class Notice extends BaseTime {
     @Id
     @Column
@@ -48,13 +42,21 @@ public class Notice extends BaseTime {
     @Column(nullable = false)
     private Long view;
 
-    @Builder
-    public Notice(String title, String content, Boolean isNotice) {
-        this.title = title;
-        this.content = content;
-        this.view = 0L;
-        this.isNotice = isNotice;
-        this.userId = 1L;
+    // 생성 메서드. PROTECTED으로 접근 설정되어 있으므로 Notice 객체는 해당 메서드로만 객체 생성가능
+    public static Notice createNotice(String title, String content, Boolean isNotice) {
+        Notice notice = new Notice();
+
+        notice.setTitle(title);
+        notice.setContent(content);
+        notice.setIsNotice(isNotice);
+        notice.setUserId(1L);
+        notice.initViewCount();
+
+        return notice;
+    }
+
+    private void initViewCount(){
+        view = 0L;
     }
 
     public void addViewCount() {

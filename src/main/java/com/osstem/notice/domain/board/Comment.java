@@ -2,15 +2,13 @@ package com.osstem.notice.domain.board;
 
 import com.osstem.notice.domain.common.BaseTime;
 import com.osstem.notice.domain.common.BooleanToYNConverter;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor
-@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter @Setter
 public class Comment extends BaseTime {
     @Id
     @Column
@@ -34,13 +32,20 @@ public class Comment extends BaseTime {
     @Column(nullable = false)
     private Long parentCommentId;
 
-    @Builder
-    public Comment(Notice notice, String content, Long parentCommentId) {
-        this.notice = notice;
+    public static Comment createNotice(Notice notice, String content, Long parentCommentId) {
+        Comment comment = new Comment();
+
+        comment.setNotice(notice);
+        comment.setContent(content);
+        comment.setIsDeleted(false);
+        comment.setParentCommentId(parentCommentId);
+        comment.setUserId(1L);
+
+        return comment;
+    }
+
+    public void changeTitle(String content) {
         this.content = content;
-        this.isDeleted = false;
-        this.parentCommentId = parentCommentId;
-        this.userId = 1L;
     }
 
     public void deleteComment() {
