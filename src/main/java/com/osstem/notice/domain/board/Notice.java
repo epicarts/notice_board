@@ -61,7 +61,7 @@ public class Notice extends BaseTime {
         this.view += 1L;
     }
 
-    public void update(String title, String content, Boolean isNotice) {
+    public void change(String title, String content, Boolean isNotice) {
         this.title = title;
         this.content = content;
         this.isNotice = isNotice;
