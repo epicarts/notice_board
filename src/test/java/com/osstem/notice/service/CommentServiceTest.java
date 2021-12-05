@@ -1,16 +1,23 @@
 package com.osstem.notice.service;
 
+import com.osstem.notice.domain.board.Comment;
+import com.osstem.notice.repository.CommentRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Transactional
 class CommentServiceTest {
+    @Autowired
+    CommentRepository commentRepository;
+
     @Autowired
     CommentService commentService;
 
@@ -37,6 +44,24 @@ class CommentServiceTest {
         //then
         //존재하지 않은 noticeId를 저장하려고 했으므로 Exception이 일어난다.
         //fail("공지사항을 찾을 수 없으면 않으면 댓글을 저장할 수 없다");
+    }
+
+    @Test
+    void 댓글_읽기예제() {
+        List<Comment> comments = commentRepository.findCommentFetchJoin();
+//        List<Comment> comments = commentRepository.findAll();
+
+
+        // 댓글을 불러오는데, notice를 여러번 불러옴.
+        for (Comment comment : comments) {
+//            System.out.println("comment.내용: " + comment.getContent());
+//            System.out.println("notice.NoticeClass" + comment.getNotice().getClass());
+//            System.out.println("comment.Notice 공지사항 제목: " + comment.getNotice().getTitle());
+//            System.out.println("============================================");
+            comment.getNotice().getTitle();
+        }
+
+
     }
 
     @Test
