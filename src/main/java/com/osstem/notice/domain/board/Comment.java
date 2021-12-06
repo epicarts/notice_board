@@ -58,7 +58,7 @@ public class Comment extends BaseTime {
         this.content = content;
     }
 
-    public void deleteComment() {
+    public void softDeleteComment() {
         isDeleted = true;
     }
 }

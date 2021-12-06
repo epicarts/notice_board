@@ -1,22 +1,27 @@
 package com.osstem.notice.service;
 
 import com.osstem.notice.domain.board.Comment;
+import com.osstem.notice.domain.board.Notice;
 import com.osstem.notice.repository.CommentRepository;
-import org.assertj.core.api.Assertions;
+import com.osstem.notice.repository.NoticeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Transactional
 class CommentServiceTest {
     @Autowired
     CommentRepository commentRepository;
+
+    @Autowired
+    NoticeRepository noticeRepository;
 
     @Autowired
     CommentService commentService;
@@ -79,12 +84,23 @@ class CommentServiceTest {
     @Test
     void 댓글_삭제하기() {
         //given
-        // 댓글 삭제를 요청한다.
+        // 삭제할 댓글을 저장한다
+        Notice notice = Notice.createNotice("첫번째 공지사항 제목입니다", "첫번째 공자사항 내용입니다", true);
+        noticeRepository.save(notice);
+        Comment comment = Comment.createComment(notice, "댓글입니다", 0L);
+        commentRepository.save(comment);
 
         //when
         //댓글을 소프트 삭제한다.
+        commentService.deleteComment(comment.getCommentId());
 
         //then
         // 소프트 삭제로 댓글상태가 변경되어야한다
+        Comment getComment = commentRepository.findById(comment.getCommentId())
+                .orElseThrow(() -> new EntityNotFoundException("댓글을 찾을 수 없습니다."));
+
+        System.out.println(comment.getIsDeleted());
+
+        assertEquals(true, getComment.getIsDeleted(), "댓글이 삭제가 되야한다.");
     }
 }

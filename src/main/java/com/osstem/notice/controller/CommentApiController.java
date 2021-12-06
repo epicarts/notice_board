@@ -39,6 +39,12 @@ public class CommentApiController {
                 .build();
     }
 
+    @DeleteMapping("/{commentId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteComment(@PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
+    }
+
     @Data
     @Builder
     static class CreateCommentResponseDto {

@@ -32,10 +32,17 @@ public class CommentService {
     }
 
     @Transactional
-    public Long updateCommentContent(Long CommentId, String content) {
-        Comment comment = commentRepository.findById(CommentId)
-                .orElseThrow(() -> new EntityNotFoundException("해당 댓글이 없습니다. CommentId=" + CommentId)); // 404 Not Found
+    public Long updateCommentContent(Long commentId, String content) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 댓글이 없습니다. commentId=" + commentId)); // 404 Not Found
         comment.changeTitle(content);
         return comment.getCommentId();
+    }
+
+    @Transactional
+    public void deleteComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 댓글이 없습니다. commentId=" + commentId)); // 404 Not Found
+        comment.softDeleteComment();
     }
 }
