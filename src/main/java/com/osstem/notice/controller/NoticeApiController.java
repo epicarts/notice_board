@@ -45,6 +45,12 @@ public class NoticeApiController {
                 .build();
     }
 
+    @DeleteMapping("/{noticeId}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteComment(@PathVariable Long noticeId) {
+        noticesService.deleteNotice(noticeId);
+    }
+
     @Data
     @Builder
     static class CreateNoticeResponseDto {
