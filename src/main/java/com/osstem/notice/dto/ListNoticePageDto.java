@@ -18,6 +18,8 @@ public class ListNoticePageDto {
 
     private String attachmentUrl;
 
+    private Long numberOfComment;
+
     public ListNoticePageDto(Long noticeId, String title, String author, String division,
                              LocalDateTime created, String attachmentUrl) {
         this.noticeId = noticeId;
@@ -26,5 +28,6 @@ public class ListNoticePageDto {
         this.division = division;
         this.created = created;
         this.attachmentUrl = attachmentUrl;
+        this.numberOfComment = 0L;
     }
 }

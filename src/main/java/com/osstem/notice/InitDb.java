@@ -42,6 +42,9 @@ public class InitDb {
             Notice notice = Notice.createNotice("첫번째 공지사항 제목입니다", "첫번째 공자사항 내용입니다", true);
             noticeRepository.save(notice);
 
+            Notice noneNotice = Notice.createNotice("댓글 없는 공지사항", "댓글 없는 공자사항 내용입니다", false);
+            noticeRepository.save(noneNotice);
+
             Comment comment1 = Comment.createComment(notice, "댓글입니다", 0L);
             commentRepository.save(comment1);
 
@@ -62,8 +65,11 @@ public class InitDb {
             User user = User.createUser("홍길동", "hong@osstem.com", "법무부", Role.USER);
             userRepository.save(user);
 
-            Notice notice = Notice.createNotice("두번째 공지사항 제목입니다", "두번째 공자사항 내용입니다", true);
+            Notice notice = Notice.createNotice("두번째 공지사항 제목입니다", "두번째 공자사항 내용입니다", false);
             noticeRepository.save(notice);
+
+            Notice noneNotice = Notice.createNotice("댓글 없는 공지사항", "댓글 없는 공자사항 내용입니다", false);
+            noticeRepository.save(noneNotice);
 
             Comment comment1 = Comment.createComment(notice, "홍길동 댓글입니다.", 0L);
             commentRepository.save(comment1);

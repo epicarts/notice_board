@@ -47,6 +47,13 @@ public class NoticeService {
     }
 
     public Page<ListNoticePageDto> findAllNotices(Pageable pageable) {
-        return noticeRepository.findAllPage(pageable);
+        Page<ListNoticePageDto> noticePageDtos = noticeRepository.findAllPage(pageable);
+
+        //commnet Id
+        for (ListNoticePageDto noticePageDto: noticePageDtos) {
+            Long CommentCount = commentRepository.countByNoticeId(noticePageDto.getNoticeId());
+            noticePageDto.setNumberOfComment(CommentCount);
+        }
+        return noticePageDtos;
     }
 }
