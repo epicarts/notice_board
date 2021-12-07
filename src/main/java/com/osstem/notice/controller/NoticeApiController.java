@@ -2,11 +2,14 @@ package com.osstem.notice.controller;
 
 import com.osstem.notice.controller.vo.CreateNoticeRequestVo;
 import com.osstem.notice.controller.vo.UpdateNoticeRequestVo;
+import com.osstem.notice.dto.ListNoticePageDto;
 import com.osstem.notice.dto.UpdateNoticeDto;
 import com.osstem.notice.service.NoticeService;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,11 @@ import javax.validation.Valid;
 public class NoticeApiController {
 
     private final NoticeService noticesService;
+
+    @GetMapping
+    public Page<ListNoticePageDto> list(Pageable pageable) {
+        return noticesService.findAllNotices(pageable);
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

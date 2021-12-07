@@ -4,10 +4,13 @@ import com.osstem.notice.controller.vo.CreateNoticeRequestVo;
 import com.osstem.notice.controller.vo.UpdateNoticeRequestVo;
 import com.osstem.notice.domain.board.Comment;
 import com.osstem.notice.domain.board.Notice;
+import com.osstem.notice.dto.ListNoticePageDto;
 import com.osstem.notice.dto.UpdateNoticeDto;
 import com.osstem.notice.repository.CommentRepository;
 import com.osstem.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,5 +44,9 @@ public class NoticeService {
         List<Comment> commentsByNotice = commentRepository.findAllByNotice(notice);
         // commentRepository.deleteAll(commentsByNotice); // n 번 호출.
         commentRepository.deleteAllInBatch(commentsByNotice);
+    }
+
+    public Page<ListNoticePageDto> findAllNotices(Pageable pageable) {
+        return noticeRepository.findAllPage(pageable);
     }
 }
