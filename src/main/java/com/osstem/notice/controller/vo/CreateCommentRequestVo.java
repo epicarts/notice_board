@@ -13,19 +13,10 @@ import javax.validation.constraints.NotNull;
 @Getter
 @RequiredArgsConstructor
 public class CreateCommentRequestVo {
-
-    @NotNull
-    @Range(min = 1L)
-    private Long noticeId;
-
     @NotNull
     @NotBlank(message = "댓글 내용은 필수 입니다") // Bad Request
     private String content = "";
 
     @Range(min = 0L)
     private Long parentId = 0L;
-
-    public Comment toEntity(Notice noticeEntity) {
-        return Comment.createComment(noticeEntity, this.content, this.parentId);
-    }
 }
