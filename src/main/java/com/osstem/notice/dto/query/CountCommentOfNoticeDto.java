@@ -1,4 +1,4 @@
-package com.osstem.notice.dto;
+package com.osstem.notice.dto.query;
 
 import lombok.Data;
 

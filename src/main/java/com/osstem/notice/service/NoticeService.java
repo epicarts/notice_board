@@ -2,8 +2,10 @@ package com.osstem.notice.service;
 
 import com.osstem.notice.domain.board.Comment;
 import com.osstem.notice.domain.board.Notice;
-import com.osstem.notice.dto.CountCommentOfNoticeDto;
-import com.osstem.notice.dto.ListNoticePageDto;
+import com.osstem.notice.dto.CommentsDtoQuery;
+import com.osstem.notice.dto.query.CountCommentOfNoticeDto;
+import com.osstem.notice.dto.FindNoticeDetailDto;
+import com.osstem.notice.dto.query.ListNoticePageDto;
 import com.osstem.notice.dto.UpdateNoticeDto;
 import com.osstem.notice.repository.CommentRepository;
 import com.osstem.notice.repository.NoticeRepository;
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class NoticeService {
     private final NoticeRepository noticeRepository;
     private final CommentRepository commentRepository;
@@ -37,6 +40,7 @@ public class NoticeService {
     }
 
     // 2 Select, 1 Delete
+    @Transactional
     public void deleteNotice(Long noticeId) {
         Notice notice = findNoticeById(noticeId);
         List<Comment> commentsByNotice = commentRepository.findAllByNotice(notice);
@@ -44,6 +48,43 @@ public class NoticeService {
         commentRepository.deleteAllInBatch(commentsByNotice);
     }
 
+    // 2 Select: Notice 조회, 댓글 조회, 자식 댓글 조회
+    public FindNoticeDetailDto findNoticeDetail(Long noticeId) {
+        FindNoticeDetailDto findNoticeDetailDto = noticeRepository.findNoticeDetailByNoticeId(noticeId)
+                .orElseThrow(() -> new EntityNotFoundException("해당 공지사항이 없습니다. noticeId=" + noticeId)); // 404 Not Found;
+
+        // 전체 댓글 조회
+        List<CommentsDtoQuery> commentsDtoQuery = commentRepository.findComments(noticeId);
+
+        // 삭제된 덧글 replace
+        replaceDeleteComment(commentsDtoQuery, "삭제된 댓글입니다");
+
+        // 부모 댓글 추출
+        List<CommentsDtoQuery> parentComments = commentsDtoQuery.stream()
+                .filter(c -> c.getParent_comment_id() == 0).collect(Collectors.toList());
+
+        // 부모 댓글에 자식 댓글 맵핑
+        for (CommentsDtoQuery parentComment : parentComments) {
+            parentComment.setChildComments(
+                    commentsDtoQuery.stream()
+                            .filter(c -> c.getParent_comment_id().equals(parentComment.getCommentId()))
+                            .collect(Collectors.toList()));
+        }
+
+        findNoticeDetailDto.setComments(parentComments);
+
+        return findNoticeDetailDto;
+    }
+
+    private void replaceDeleteComment(List<CommentsDtoQuery> comments, String deleteMessage) {
+        for (CommentsDtoQuery comment : comments) {
+            if (comment.getIs_deleted()) {
+                comment.setContent(deleteMessage);
+            }
+        }
+    }
+
+    // 2 Select: notice 조회, Comment Count 조회
     public Page<ListNoticePageDto> findAllNotices(Pageable pageable) {
         Page<ListNoticePageDto> noticePageDtos = noticeRepository.findAllPage(pageable);
 
@@ -67,10 +108,6 @@ public class NoticeService {
                         CountCommentOfNoticeDto::getNumberOfComments));
     }
 
-//    public FindNoticeDetailDto findNoticeDetail(Long noticeId) {
-//        Notice notice = findNoticeById(noticeId);
-//        return null;
-//    }
 
     private Notice findNoticeById(Long noticeId) {
         return noticeRepository.findById(noticeId)// 공지사항 게시글 존재여부 확인

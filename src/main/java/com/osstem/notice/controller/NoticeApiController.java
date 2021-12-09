@@ -2,7 +2,8 @@ package com.osstem.notice.controller;
 
 import com.osstem.notice.controller.vo.CreateNoticeRequestVo;
 import com.osstem.notice.controller.vo.UpdateNoticeRequestVo;
-import com.osstem.notice.dto.ListNoticePageDto;
+import com.osstem.notice.dto.FindNoticeDetailDto;
+import com.osstem.notice.dto.query.ListNoticePageDto;
 import com.osstem.notice.dto.UpdateNoticeDto;
 import com.osstem.notice.service.NoticeService;
 import lombok.Builder;
@@ -25,6 +26,16 @@ public class NoticeApiController {
     @GetMapping
     public Page<ListNoticePageDto> list(Pageable pageable) {
         return noticesService.findAllNotices(pageable);
+    }
+
+//    @GetMapping("/notice") // 공지사항 표시된 리스트만 조회
+//    public Page<ListNoticePageDto> listByNotice(Pageable pageable) {
+//        return noticesService.findAllNotices(pageable);
+//    }
+
+    @GetMapping("/{noticeId}")
+    public FindNoticeDetailDto get(@PathVariable Long noticeId) {
+        return noticesService.findNoticeDetail(noticeId);
     }
 
     @PostMapping

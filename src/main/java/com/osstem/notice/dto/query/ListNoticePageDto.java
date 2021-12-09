@@ -1,8 +1,7 @@
-package com.osstem.notice.dto;
+package com.osstem.notice.dto.query;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +12,7 @@ public class ListNoticePageDto {
     private String author;
     private String division;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime created;
 
     private String attachmentUrl;

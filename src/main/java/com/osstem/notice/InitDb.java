@@ -7,6 +7,7 @@ import com.osstem.notice.domain.user.User;
 import com.osstem.notice.repository.CommentRepository;
 import com.osstem.notice.repository.NoticeRepository;
 import com.osstem.notice.repository.UserRepository;
+import com.osstem.notice.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,7 @@ public class InitDb {
         private final NoticeRepository noticeRepository;
         private final CommentRepository commentRepository;
         private final UserRepository userRepository;
+        private final CommentService commentService;
 
         public void dbInit1() {
             User user = User.createUser("최영호", "0505zxc@osstem.com", "OW공통개발실", Role.ADMIN);
@@ -59,6 +61,8 @@ public class InitDb {
 
             Comment comment5 = Comment.createComment(notice, "대댓글입니다", comment4.getCommentId());
             commentRepository.save(comment5);
+
+            commentService.deleteComment(comment3.getCommentId());
         }
 
         public void dbInit2() {
