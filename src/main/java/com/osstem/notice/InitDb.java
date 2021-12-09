@@ -26,6 +26,10 @@ public class InitDb {
     public void init() {
         initService.dbInit1();
         initService.dbInit2();
+
+        for (int i = 0; i < 200; i++) {
+            initService.noCommentNotice(i);
+        }
     }
 
     @Component
@@ -83,6 +87,11 @@ public class InitDb {
 
             Comment comment3 = Comment.createComment(notice, "홍길동 대댓글입니다2", comment1.getCommentId());
             commentRepository.save(comment3);
+        }
+
+        public void noCommentNotice(int i) {
+            Notice noneNotice = Notice.createNotice("댓글 없는 공지사항" + i, "댓글 없는 공자사항 내용입니다", false);
+            noticeRepository.save(noneNotice);
         }
     }
 }
