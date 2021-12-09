@@ -13,15 +13,17 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/comments")
+@RequestMapping("/api/notices/{noticeId}/comments")
 public class CommentApiController {
 
     private final CommentService commentService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateCommentResponseDto create(@Valid @RequestBody CreateCommentRequestVo requestVo) {
-        Long commentId = commentService.saveComment(requestVo.getNoticeId(), requestVo.getContent(), requestVo.getParentId());
+    public CreateCommentResponseDto create(
+            @PathVariable Long noticeId,
+            @Valid @RequestBody CreateCommentRequestVo requestVo) {
+        Long commentId = commentService.saveComment(noticeId, requestVo.getContent(), requestVo.getParentId());
 
         return CreateCommentResponseDto.builder()
                 .commentId(commentId)
