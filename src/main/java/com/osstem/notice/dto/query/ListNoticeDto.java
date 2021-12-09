@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class ListNoticePageDto {
+public class ListNoticeDto {
     private Long noticeId;
     private String title;
     private String author;
@@ -19,8 +19,8 @@ public class ListNoticePageDto {
 
     private Long numberOfComment;
 
-    public ListNoticePageDto(Long noticeId, String title, String author, String division,
-                             LocalDateTime created, String attachmentUrl) {
+    public ListNoticeDto(Long noticeId, String title, String author, String division,
+                         LocalDateTime created, String attachmentUrl) {
         this.noticeId = noticeId;
         this.title = title;
         this.author = author;

@@ -5,7 +5,7 @@ import com.osstem.notice.domain.board.Notice;
 import com.osstem.notice.dto.CommentsDtoQuery;
 import com.osstem.notice.dto.query.CountCommentOfNoticeDto;
 import com.osstem.notice.dto.FindNoticeDetailDto;
-import com.osstem.notice.dto.query.ListNoticePageDto;
+import com.osstem.notice.dto.query.ListNoticeDto;
 import com.osstem.notice.dto.UpdateNoticeDto;
 import com.osstem.notice.repository.CommentRepository;
 import com.osstem.notice.repository.NoticeRepository;
@@ -84,13 +84,17 @@ public class NoticeService {
         }
     }
 
+    public List<ListNoticeDto> findAllByNotice() {
+        return noticeRepository.findAllByIsNotice();
+    }
+
     // 2 Select: notice 조회, Comment Count 조회
-    public Page<ListNoticePageDto> findAllNotices(Pageable pageable) {
-        Page<ListNoticePageDto> noticePageDtos = noticeRepository.findAllPage(pageable);
+    public Page<ListNoticeDto> findAllNotices(Pageable pageable) {
+        Page<ListNoticeDto> noticePageDtos = noticeRepository.findAllPage(pageable);
 
         // Notice Id List 로 추출
         List<Long> NoticeIds = noticePageDtos.stream()
-                .map(ListNoticePageDto::getNoticeId)
+                .map(ListNoticeDto::getNoticeId)
                 .collect(Collectors.toList());
 
         Map<Long, Long> noticeMap = findNoticeMap(NoticeIds);

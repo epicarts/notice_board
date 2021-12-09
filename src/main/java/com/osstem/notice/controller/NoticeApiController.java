@@ -3,7 +3,7 @@ package com.osstem.notice.controller;
 import com.osstem.notice.controller.vo.CreateNoticeRequestVo;
 import com.osstem.notice.controller.vo.UpdateNoticeRequestVo;
 import com.osstem.notice.dto.FindNoticeDetailDto;
-import com.osstem.notice.dto.query.ListNoticePageDto;
+import com.osstem.notice.dto.query.ListNoticeDto;
 import com.osstem.notice.dto.UpdateNoticeDto;
 import com.osstem.notice.service.NoticeService;
 import lombok.Builder;
@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,14 +25,14 @@ public class NoticeApiController {
     private final NoticeService noticesService;
 
     @GetMapping
-    public Page<ListNoticePageDto> list(Pageable pageable) {
+    public Page<ListNoticeDto> list(Pageable pageable) {
         return noticesService.findAllNotices(pageable);
     }
 
-//    @GetMapping("/notice") // 공지사항 표시된 리스트만 조회
-//    public Page<ListNoticePageDto> listByNotice(Pageable pageable) {
-//        return noticesService.findAllNotices(pageable);
-//    }
+    @GetMapping("/notice") // 공지사항 표시된 리스트만 조회
+    public List<ListNoticeDto> listByNotice() {
+        return noticesService.findAllByNotice();
+    }
 
     @GetMapping("/{noticeId}")
     public FindNoticeDetailDto get(@PathVariable Long noticeId) {

@@ -30,6 +30,10 @@ public class InitDb {
         for (int i = 0; i < 200; i++) {
             initService.noCommentNotice(i);
         }
+
+        for (int i = 0; i < 3; i++) {
+            initService.noticeByNotice(i);
+        }
     }
 
     @Component
@@ -91,6 +95,11 @@ public class InitDb {
 
         public void noCommentNotice(int i) {
             Notice noneNotice = Notice.createNotice("댓글 없는 공지사항" + i, "댓글 없는 공자사항 내용입니다", false);
+            noticeRepository.save(noneNotice);
+        }
+
+        public void noticeByNotice(int i) {
+            Notice noneNotice = Notice.createNotice("공지로 등록된 공지사항" + i, "공지로 등록된 공지사항 공지로 등록된 공지사항", true);
             noticeRepository.save(noneNotice);
         }
     }
