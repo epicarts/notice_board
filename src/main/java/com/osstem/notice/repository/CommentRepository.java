@@ -13,7 +13,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     List<Comment> findAllByNotice(Notice notice);
 
-    @Query("SELECT new com.osstem.notice.dto.CommentsDtoQuery(c.commentId, c.content, u.division, u.name, c.isDeleted, c.parentCommentId)" +
+    @Query("SELECT new com.osstem.notice.dto.CommentsDtoQuery(c.commentId, c.content, u.division, u.name, c.isDeleted, c.parentCommentId, c.created)" +
             " FROM Comment c JOIN User u ON c.userId = u.userId WHERE c.notice.noticeId = :noticeId")
     List<CommentsDtoQuery> findComments(Long noticeId);
 

@@ -25,12 +25,13 @@ public class CommentsDtoQuery {
     private List<CommentsDtoQuery> childComments = new ArrayList<>();
 
     public CommentsDtoQuery(Long commentId, String content, String division, String author,
-                            Boolean is_deleted, Long parent_comment_id) {
+                            Boolean is_deleted, Long parent_comment_id, LocalDateTime created) {
         this.commentId = commentId;
         this.content = content;
         this.division = division;
         this.author = author;
         this.is_deleted = is_deleted;
         this.parent_comment_id = parent_comment_id;
+        this.created = created;
     }
 }
