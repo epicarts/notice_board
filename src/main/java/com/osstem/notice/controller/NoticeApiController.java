@@ -10,7 +10,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,8 +27,12 @@ public class NoticeApiController {
     private final NoticeService noticesService;
 
     @GetMapping
-    public Page<ListNoticeDto> list(Pageable pageable) {
-        return noticesService.findAllNotices(pageable);
+    public Page<ListNoticeDto> list(
+            @RequestParam(value = "search", required = false) String searchKeyword,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            @RequestParam(value = "size", defaultValue = "20") int size) {
+        Pageable sortedByNoticeId = PageRequest.of(page, size, Sort.by("noticeId").descending());
+        return noticesService.findAllNotices(searchKeyword, sortedByNoticeId);
     }
 
     @GetMapping("/notice") // 공지사항 표시된 리스트만 조회
