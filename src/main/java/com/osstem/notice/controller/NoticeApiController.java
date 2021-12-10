@@ -28,7 +28,7 @@ public class NoticeApiController {
 
     @GetMapping
     public Page<ListNoticeDto> list(
-            @RequestParam(value = "search", required = false) String searchKeyword,
+            @RequestParam(value = "search", defaultValue = "") String searchKeyword,
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "20") int size) {
         Pageable sortedByNoticeId = PageRequest.of(page, size, Sort.by("noticeId").descending());

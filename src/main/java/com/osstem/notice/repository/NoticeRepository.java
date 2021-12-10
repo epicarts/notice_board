@@ -25,7 +25,9 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
 
     @Query("SELECT new com.osstem.notice.dto.query.ListNoticeDto(n.noticeId, n.title, u.name, u.division, n.created, '')" +
             " FROM Notice n JOIN User u on n.userId = u.userId" +
-            " WHERE u.name LIKE %:keyword% OR n.title LIKE %:keyword% OR n.content LIKE %:keyword%")
+            " WHERE u.name LIKE CONCAT('%',:keyword,'%') " +
+            " OR n.title LIKE CONCAT('%',:keyword,'%') " +
+            " OR n.content LIKE CONCAT('%',:keyword,'%')")
     Page<ListNoticeDto> findAllPageSearch(String keyword, Pageable pageable);
 
     @Query("SELECT new com.osstem.notice.dto.query.ListNoticeDto(n.noticeId, n.title, u.name, u.division, n.created, '')" +
