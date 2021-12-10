@@ -42,6 +42,7 @@ public class NoticeApiController {
 
     @GetMapping("/{noticeId}")
     public FindNoticeDetailDto get(@PathVariable Long noticeId) {
+        noticesService.addNoticeViewCount(noticeId); // 비동기로 view 증가
         return noticesService.findNoticeDetail(noticeId);
     }
 

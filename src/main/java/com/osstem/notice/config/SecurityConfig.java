@@ -2,6 +2,7 @@ package com.osstem.notice.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -9,6 +10,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @RequiredArgsConstructor
 @Configuration
 @EnableWebMvc // swagger 사용을 위해 추가
+@EnableAsync
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override //security 반영 설정
     protected void configure(HttpSecurity httpSecurity) throws Exception {

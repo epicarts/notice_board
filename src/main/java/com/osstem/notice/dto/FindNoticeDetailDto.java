@@ -13,18 +13,21 @@ public class FindNoticeDetailDto {
     private String content;
     private String attachmentUrl;
     private String author;
+    private Long views;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime created;
 
     private List<CommentsDtoQuery> comments;
 
-    public FindNoticeDetailDto(Long noticeId, String title, String content, String attachmentUrl, LocalDateTime created, String author) {
+    public FindNoticeDetailDto(Long noticeId, String title, String content, String attachmentUrl,
+                               LocalDateTime created, String author, Long views) {
         this.noticeId = noticeId;
         this.title = title;
         this.content = content;
         this.attachmentUrl = attachmentUrl;
         this.created = created;
         this.author = author;
+        this.views = views;
     }
 }

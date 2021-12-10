@@ -12,7 +12,9 @@ import com.osstem.notice.repository.NoticeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
@@ -118,5 +120,12 @@ public class NoticeService {
         return noticeRepository.findById(noticeId)// 공지사항 게시글 존재여부 확인
                 .orElseThrow(() -> new EntityNotFoundException("해당 공지사항이 없습니다. noticeId=" + noticeId)); // 404 Not Found\
 
+    }
+
+    @Async
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void addNoticeViewCount(Long noticeId) {
+        Notice notice = findNoticeById(noticeId);
+        notice.addViewCount();
     }
 }

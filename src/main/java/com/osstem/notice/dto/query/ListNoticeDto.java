@@ -18,9 +18,10 @@ public class ListNoticeDto {
     private String attachmentUrl;
 
     private Long numberOfComment;
+    private Long views;
 
     public ListNoticeDto(Long noticeId, String title, String author, String division,
-                         LocalDateTime created, String attachmentUrl) {
+                         LocalDateTime created, String attachmentUrl, Long views) {
         this.noticeId = noticeId;
         this.title = title;
         this.author = author;
@@ -28,5 +29,6 @@ public class ListNoticeDto {
         this.created = created;
         this.attachmentUrl = attachmentUrl;
         this.numberOfComment = 0L;
+        this.views = views;
     }
 }
