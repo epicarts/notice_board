@@ -40,7 +40,8 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
      * @param noticeIds
      * @return Counts
      */
-    @Query("SELECT new com.osstem.notice.dto.query.CountCommentOfNoticeDto(n.noticeId, COUNT(c.commentId)) FROM Notice n LEFT JOIN Comment c ON n.noticeId = c.notice.noticeId" +
+    @Query("SELECT new com.osstem.notice.dto.query.CountCommentOfNoticeDto(n.noticeId, COUNT(c.commentId))" +
+            " FROM Notice n LEFT JOIN Comment c ON n.noticeId = c.notice.noticeId" +
             " WHERE n.noticeId IN (:noticeIds)" +
             " GROUP BY n.noticeId")
     List<CountCommentOfNoticeDto> countCommentsByNoticeIds(List<Long> noticeIds);

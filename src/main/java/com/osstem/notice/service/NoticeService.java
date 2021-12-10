@@ -92,8 +92,7 @@ public class NoticeService {
 
     // 2 Select: notice 조회, Comment Count 조회
     public Page<ListNoticeDto> findAllNotices(String searchKeyword, Pageable pageable) {
-        Page<ListNoticeDto> noticePageDtos;
-        noticePageDtos = noticeRepository.findAllPageSearch(searchKeyword, pageable);
+        Page<ListNoticeDto> noticePageDtos = noticeRepository.findAllPageSearch(searchKeyword, pageable);
 
         // Notice Id List 로 추출
         List<Long> NoticeIds = noticePageDtos.stream()
