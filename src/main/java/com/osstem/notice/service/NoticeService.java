@@ -2,6 +2,7 @@ package com.osstem.notice.service;
 
 import com.osstem.notice.domain.board.Comment;
 import com.osstem.notice.domain.board.Notice;
+import com.osstem.notice.domain.user.Role;
 import com.osstem.notice.dto.CommentsDtoQuery;
 import com.osstem.notice.dto.query.CountCommentOfNoticeDto;
 import com.osstem.notice.dto.FindNoticeDetailDto;
@@ -55,8 +56,11 @@ public class NoticeService {
         FindNoticeDetailDto findNoticeDetailDto = noticeRepository.findNoticeDetailByNoticeId(noticeId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 공지사항이 없습니다. noticeId=" + noticeId)); // 404 Not Found;
 
-        // 전체 댓글 조회
+        // 전체 댓글 조회 select
         List<CommentsDtoQuery> commentsDtoQuery = commentRepository.findComments(noticeId);
+
+        // 전체 댓글 사이즈
+        findNoticeDetailDto.setNumberOfComment((long) commentsDtoQuery.size());
 
         // 삭제된 덧글 replace
         replaceDeleteComment(commentsDtoQuery, "삭제된 댓글입니다");

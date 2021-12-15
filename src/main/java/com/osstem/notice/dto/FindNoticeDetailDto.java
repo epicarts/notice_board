@@ -14,6 +14,7 @@ public class FindNoticeDetailDto {
     private String attachmentUrl;
     private String author;
     private Long views;
+    private Long numberOfComment;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime created;
@@ -29,5 +30,6 @@ public class FindNoticeDetailDto {
         this.created = created;
         this.author = author;
         this.views = views;
+        this.numberOfComment = 0L;
     }
 }
