@@ -19,18 +19,18 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
             " WHERE n.noticeId = :noticeId")
     Optional<FindNoticeDetailDto> findNoticeDetailByNoticeId(Long noticeId);
 
-    @Query("SELECT new com.osstem.notice.dto.query.ListNoticeDto(n.noticeId, n.title, u.name, u.division, n.created, '', n.view)" +
+    @Query("SELECT new com.osstem.notice.dto.query.ListNoticeDto(n.noticeId, n.title, u.name, u.division, n.created, '', n.view, n.isNotice)" +
             " FROM Notice n JOIN User u on n.userId = u.userId")
     Page<ListNoticeDto> findAllPage(Pageable pageable);
 
-    @Query("SELECT new com.osstem.notice.dto.query.ListNoticeDto(n.noticeId, n.title, u.name, u.division, n.created, '', n.view)" +
+    @Query("SELECT new com.osstem.notice.dto.query.ListNoticeDto(n.noticeId, n.title, u.name, u.division, n.created, '', n.view, n.isNotice)" +
             " FROM Notice n JOIN User u on n.userId = u.userId" +
             " WHERE u.name LIKE CONCAT('%',:keyword,'%') " +
             " OR n.title LIKE CONCAT('%',:keyword,'%') " +
             " OR n.content LIKE CONCAT('%',:keyword,'%')")
     Page<ListNoticeDto> findAllPageSearch(String keyword, Pageable pageable);
 
-    @Query("SELECT new com.osstem.notice.dto.query.ListNoticeDto(n.noticeId, n.title, u.name, u.division, n.created, '', n.view)" +
+    @Query("SELECT new com.osstem.notice.dto.query.ListNoticeDto(n.noticeId, n.title, u.name, u.division, n.created, '', n.view, n.isNotice)" +
             " FROM Notice n JOIN User u on n.userId = u.userId" +
             " WHERE n.isNotice = true")
     List<ListNoticeDto> findAllByIsNotice();
