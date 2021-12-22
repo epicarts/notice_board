@@ -91,7 +91,15 @@ public class NoticeService {
     }
 
     public List<ListNoticeDto> findAllByNotice() {
-        return noticeRepository.findAllByIsNotice();
+        List<ListNoticeDto> noticeDtos = noticeRepository.findAllByIsNotice();
+
+        List<Long> NoticeIds = noticeDtos.stream()
+                .map(ListNoticeDto::getNoticeId)
+                .collect(Collectors.toList());
+        Map<Long, Long> noticeMap = findNoticeMap(NoticeIds);
+        noticeDtos.forEach(n -> n.setNumberOfComment(noticeMap.get(n.getNoticeId())));
+
+        return noticeDtos;
     }
 
     // 2 Select: notice 조회, Comment Count 조회
