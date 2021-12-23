@@ -1,4 +1,4 @@
-package com.osstem.notice.controller.vo;
+package com.osstem.notice.vo;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,8 +1,6 @@
-package com.osstem.notice.controller.vo;
+package com.osstem.notice.vo;
 
 
-import com.osstem.notice.domain.board.Comment;
-import com.osstem.notice.domain.board.Notice;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;

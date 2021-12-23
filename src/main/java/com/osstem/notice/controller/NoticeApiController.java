@@ -1,7 +1,7 @@
 package com.osstem.notice.controller;
 
-import com.osstem.notice.controller.vo.CreateNoticeRequestVo;
-import com.osstem.notice.controller.vo.UpdateNoticeRequestVo;
+import com.osstem.notice.vo.CreateNoticeRequestVo;
+import com.osstem.notice.vo.UpdateNoticeRequestVo;
 import com.osstem.notice.dto.FindNoticeDetailDto;
 import com.osstem.notice.dto.query.ListNoticeDto;
 import com.osstem.notice.dto.UpdateNoticeDto;

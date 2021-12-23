@@ -1,7 +1,7 @@
 package com.osstem.notice.controller;
 
-import com.osstem.notice.controller.vo.CreateCommentRequestVo;
-import com.osstem.notice.controller.vo.UpdateCommentContentVo;
+import com.osstem.notice.vo.CreateCommentRequestVo;
+import com.osstem.notice.vo.UpdateCommentContentVo;
 import com.osstem.notice.service.CommentService;
 import lombok.Builder;
 import lombok.Data;
