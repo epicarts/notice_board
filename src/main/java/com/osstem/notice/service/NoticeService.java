@@ -84,7 +84,7 @@ public class NoticeService {
 
     private void replaceDeleteComment(List<CommentsDtoQuery> comments, String deleteMessage) {
         for (CommentsDtoQuery comment : comments) {
-            if (comment.getIs_deleted()) {
+            if (comment.getIsDeleted()) {
                 comment.setContent(deleteMessage);
             }
         }
