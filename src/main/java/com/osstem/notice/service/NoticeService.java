@@ -49,6 +49,7 @@ public class NoticeService {
         List<Comment> commentsByNotice = commentRepository.findAllByNotice(notice);
         // commentRepository.deleteAll(commentsByNotice); // n 번 호출.
         commentRepository.deleteAllInBatch(commentsByNotice);
+        noticeRepository.delete(notice);
     }
 
     // 2 Select: Notice 조회, 댓글 조회, 자식 댓글 조회
