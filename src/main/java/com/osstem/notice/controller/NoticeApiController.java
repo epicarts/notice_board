@@ -15,7 +15,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -45,9 +47,10 @@ public class NoticeApiController {
         return noticesService.findNoticeDetail(noticeId);
     }
 
-    @PostMapping
+    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateNoticeResponseDto create(@Valid @RequestBody CreateNoticeRequestVo requestVo) {
+    public CreateNoticeResponseDto create(@RequestPart(value="noticeData") CreateNoticeRequestVo requestVo,
+                                          @RequestPart(value="files", required=false) List<MultipartFile> files) {
         Long noticeId = noticesService.saveNotice(requestVo.toEntity());
 
         return CreateNoticeResponseDto.builder()
