@@ -1,5 +1,6 @@
 package com.osstem.notice.controller;
 
+import com.osstem.notice.service.common.FileS3Service;
 import com.osstem.notice.vo.CreateNoticeRequestVo;
 import com.osstem.notice.vo.UpdateNoticeRequestVo;
 import com.osstem.notice.dto.FindNoticeDetailDto;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -27,6 +29,7 @@ import java.util.List;
 @RequestMapping("/api/notices")
 public class NoticeApiController {
 
+    private final FileS3Service fileS3Service;
     private final NoticeService noticesService;
 
     @GetMapping
@@ -52,6 +55,11 @@ public class NoticeApiController {
     public CreateNoticeResponseDto create(@RequestPart(value="noticeData") CreateNoticeRequestVo requestVo,
                                           @RequestPart(value="files", required=false) List<MultipartFile> files) {
         Long noticeId = noticesService.saveNotice(requestVo.toEntity());
+        try {
+            fileS3Service.storeFiles(files);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return CreateNoticeResponseDto.builder()
                 .noticeId(noticeId)

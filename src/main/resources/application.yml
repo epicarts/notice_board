@@ -18,12 +18,25 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
+  profiles:
+    # application-credentials 파일 포함
+    include:
+      - credentials
 #  h2:
 #    console:
 #      enabled: true
 #      settings:
 #        web-allow-others: true
-
+cloud:
+  aws:
+    s3:
+      bucket: springboot-intern-backend
+    credentials:
+      instance-profile: true
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
 logging:
   level:
     org.hibernate.SQL: debug
