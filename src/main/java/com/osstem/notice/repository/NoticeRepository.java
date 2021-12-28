@@ -32,7 +32,8 @@ public interface NoticeRepository extends JpaRepository<Notice, Long> {
 
     @Query("SELECT new com.osstem.notice.dto.query.ListNoticeDto(n.noticeId, n.title, u.name, u.division, n.created, '', n.view, n.isNotice)" +
             " FROM Notice n JOIN User u on n.userId = u.userId" +
-            " WHERE n.isNotice = true")
+            " WHERE n.isNotice = true " +
+            " ORDER BY n.noticeId DESC ")
     List<ListNoticeDto> findAllByIsNotice();
 
     /**
