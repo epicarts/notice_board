@@ -2,12 +2,12 @@ package com.osstem.notice.service.common;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
-import com.osstem.notice.dto.query.ListNoticeDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -20,20 +20,15 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class FileS3Service {
+@Transactional
+public class FileS3Service implements FileService {
     private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public Long storeFiles(List<MultipartFile> files) throws IOException {
-        for (MultipartFile file: files) {
-            String FileUrl = storeFile(file);
-        }
-        return null;
-    }
-
-    public String storeFile(MultipartFile file) throws IOException {
+    @Override
+    public String saveFile(MultipartFile file) throws IOException {
         String fileName = createFileName(file.getOriginalFilename());
         File uploadFile = convert(file)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
@@ -47,6 +42,10 @@ public class FileS3Service {
 
     private void putS3(File uploadFile, String fileName) {
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+    }
+
+    public void deleteFile(String fileName) {
+        amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, fileName));
     }
 
     public String getFileUrl(String fileName) {
@@ -67,4 +66,6 @@ public class FileS3Service {
         UUID uuid = UUID.randomUUID();
         return uuid.toString() + '_' + originalFileName;
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.osstem.notice.service;
 
+import com.osstem.notice.domain.board.Attachment;
 import com.osstem.notice.domain.board.Comment;
 import com.osstem.notice.domain.board.Notice;
 import com.osstem.notice.domain.user.Role;
@@ -8,8 +9,11 @@ import com.osstem.notice.dto.query.CountCommentOfNoticeDto;
 import com.osstem.notice.dto.FindNoticeDetailDto;
 import com.osstem.notice.dto.query.ListNoticeDto;
 import com.osstem.notice.dto.UpdateNoticeDto;
+import com.osstem.notice.repository.AttachmentRepository;
 import com.osstem.notice.repository.CommentRepository;
 import com.osstem.notice.repository.NoticeRepository;
+import com.osstem.notice.service.common.FileS3Service;
+import com.osstem.notice.service.common.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +21,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,6 +36,9 @@ import java.util.stream.Collectors;
 public class NoticeService {
     private final NoticeRepository noticeRepository;
     private final CommentRepository commentRepository;
+    private final AttachmentRepository attachmentRepository;
+
+    private final FileService fileService;
 
     @Transactional
     public Long saveNotice(Notice notice) {
@@ -139,5 +149,28 @@ public class NoticeService {
     public void addNoticeViewCount(Long noticeId) {
         Notice notice = findNoticeById(noticeId);
         notice.addViewCount();
+    }
+
+    @Transactional(rollbackFor = IOException.class)
+    public Long saveNoticeWithFiles(Notice notice, List<MultipartFile> files) {
+        Long noticeId = saveNotice(notice);
+        // notice 가 제대로 저장되어 있는지 확인.
+
+        // file save
+        try {
+            ArrayList<Attachment> attachments = new ArrayList<>();
+            for (MultipartFile file : files) {
+                String filePath = fileService.saveFile(file);
+
+                // file save to db
+                attachments.add(Attachment.createAttachment(notice, filePath, file.getOriginalFilename()));
+            }
+            attachmentRepository.saveAll(attachments);
+        } catch (IOException e) {
+            e.printStackTrace();
+            new IOException("파일 저장을 실패했습니다.");
+        }
+
+        return noticeId;
     }
 }

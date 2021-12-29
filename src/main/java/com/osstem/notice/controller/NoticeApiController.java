@@ -29,7 +29,6 @@ import java.util.List;
 @RequestMapping("/api/notices")
 public class NoticeApiController {
 
-    private final FileS3Service fileS3Service;
     private final NoticeService noticesService;
 
     @GetMapping
@@ -50,16 +49,20 @@ public class NoticeApiController {
         return noticesService.findNoticeDetail(noticeId);
     }
 
-    @PostMapping(consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE })
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateNoticeResponseDto create(@RequestPart(value="noticeData") CreateNoticeRequestVo requestVo,
-                                          @RequestPart(value="files", required=false) List<MultipartFile> files) {
-        Long noticeId = noticesService.saveNotice(requestVo.toEntity());
-        try {
-            fileS3Service.storeFiles(files);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public CreateNoticeResponseDto create(@RequestPart(value = "noticeData") CreateNoticeRequestVo requestVo,
+                                          @RequestPart(value = "files", required = false) List<MultipartFile> files) throws IOException {
+        // 첨부파일이 없을 경우
+        if (files == null) {
+            Long noticeId = noticesService.saveNotice(requestVo.toEntity());
+            return CreateNoticeResponseDto.builder()
+                    .noticeId(noticeId)
+                    .build();
         }
+
+        // 첨부파일이 있을경우
+        Long noticeId = noticesService.saveNoticeWithFiles(requestVo.toEntity(), files);
 
         return CreateNoticeResponseDto.builder()
                 .noticeId(noticeId)

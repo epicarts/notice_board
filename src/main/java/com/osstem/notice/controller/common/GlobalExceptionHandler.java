@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.persistence.EntityNotFoundException;
+import java.io.IOException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -67,6 +68,15 @@ public class GlobalExceptionHandler {
     public ErrorResult entityNotFoundExHandler(EntityNotFoundException e) {
         return ErrorResult.builder()
                 .errorCode(HttpStatus.NOT_FOUND.value())
+                .errorMessage(e.getMessage())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.BAD_GATEWAY)
+    @ExceptionHandler(IOException.class)
+    public ErrorResult IOExHandler(IOException e) {
+        return ErrorResult.builder()
+                .errorCode(HttpStatus.BAD_GATEWAY.value())
                 .errorMessage(e.getMessage())
                 .build();
     }
