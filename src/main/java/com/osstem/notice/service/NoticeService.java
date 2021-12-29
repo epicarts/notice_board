@@ -55,9 +55,17 @@ public class NoticeService {
     @Transactional
     public void deleteNotice(Long noticeId) {
         Notice notice = findNoticeById(noticeId);
+
+        // comment 삭제
         List<Comment> commentsByNotice = commentRepository.findAllByNotice(notice);
-        // commentRepository.deleteAll(commentsByNotice); // n 번 호출.
         commentRepository.deleteAllInBatch(commentsByNotice);
+        // commentRepository.deleteAll(commentsByNotice); // n 번 호출.
+
+
+        // attachment 삭제
+        List<Attachment> attachmentsByNotice = attachmentRepository.findAllByNotice(notice);
+        attachmentRepository.deleteAllInBatch(attachmentsByNotice);
+
         noticeRepository.delete(notice);
     }
 
@@ -111,7 +119,7 @@ public class NoticeService {
                 .collect(Collectors.toList());
         Map<Long, Long> noticeMap = findNoticeMap(NoticeIds);
         noticeDtos.forEach(n -> n.setNumberOfComment(noticeMap.get(n.getNoticeId())));
-        
+
         // 루프를 돌면서 컬렉션 추가
         Map<Long, List<AttachmentDto>> attachmentMap = findAttachmentMap(NoticeIds);
         noticeDtos.forEach(n -> n.setAttachments(attachmentMap.get(n.getNoticeId())));

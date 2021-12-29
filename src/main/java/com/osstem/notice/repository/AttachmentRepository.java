@@ -1,6 +1,7 @@
 package com.osstem.notice.repository;
 
 import com.osstem.notice.domain.board.Attachment;
+import com.osstem.notice.domain.board.Notice;
 import com.osstem.notice.dto.AttachmentDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -8,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface AttachmentRepository extends JpaRepository<Attachment, Long> {
+    List<Attachment> findAllByNotice(Notice notice);
 
     @Query("SELECT new com.osstem.notice.dto.AttachmentDto(a.attachmentId, a.OriginalFilename, a.filePath, n.noticeId)" +
             " FROM Notice n JOIN Attachment a ON n.noticeId = a.notice.noticeId" +
