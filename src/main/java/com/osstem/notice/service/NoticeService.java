@@ -3,7 +3,7 @@ package com.osstem.notice.service;
 import com.osstem.notice.domain.board.Attachment;
 import com.osstem.notice.domain.board.Comment;
 import com.osstem.notice.domain.board.Notice;
-import com.osstem.notice.domain.user.Role;
+import com.osstem.notice.dto.AttachmentDto;
 import com.osstem.notice.dto.CommentsDtoQuery;
 import com.osstem.notice.dto.query.CountCommentOfNoticeDto;
 import com.osstem.notice.dto.FindNoticeDetailDto;
@@ -12,7 +12,6 @@ import com.osstem.notice.dto.UpdateNoticeDto;
 import com.osstem.notice.repository.AttachmentRepository;
 import com.osstem.notice.repository.CommentRepository;
 import com.osstem.notice.repository.NoticeRepository;
-import com.osstem.notice.service.common.FileS3Service;
 import com.osstem.notice.service.common.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -62,10 +61,13 @@ public class NoticeService {
         noticeRepository.delete(notice);
     }
 
-    // 2 Select: Notice 조회, 댓글 조회, 자식 댓글 조회
+    // 3 Select: Notice 조회, 댓글/자식 댓글 조회, 첨부파일 조회
     public FindNoticeDetailDto findNoticeDetail(Long noticeId) {
         FindNoticeDetailDto findNoticeDetailDto = noticeRepository.findNoticeDetailByNoticeId(noticeId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 공지사항이 없습니다. noticeId=" + noticeId)); // 404 Not Found;
+
+        // 첨부파일 조회 select
+        findNoticeDetailDto.setAttachments(attachmentRepository.findAttachmentsByNoticeId(noticeId));
 
         // 전체 댓글 조회 select
         List<CommentsDtoQuery> commentsDtoQuery = commentRepository.findComments(noticeId);
@@ -109,11 +111,15 @@ public class NoticeService {
                 .collect(Collectors.toList());
         Map<Long, Long> noticeMap = findNoticeMap(NoticeIds);
         noticeDtos.forEach(n -> n.setNumberOfComment(noticeMap.get(n.getNoticeId())));
+        
+        // 루프를 돌면서 컬렉션 추가
+        Map<Long, List<AttachmentDto>> attachmentMap = findAttachmentMap(NoticeIds);
+        noticeDtos.forEach(n -> n.setAttachments(attachmentMap.get(n.getNoticeId())));
 
         return noticeDtos;
     }
 
-    // 2 Select: notice 조회, Comment Count 조회
+    // 3 Select: notice 조회, Comment Count 조회, attachment 조회
     public Page<ListNoticeDto> findAllNotices(String searchKeyword, Pageable pageable) {
         Page<ListNoticeDto> noticePageDtos = noticeRepository.findAllPageSearch(searchKeyword, pageable);
 
@@ -125,6 +131,10 @@ public class NoticeService {
         Map<Long, Long> noticeMap = findNoticeMap(NoticeIds);
         noticePageDtos.forEach(n -> n.setNumberOfComment(noticeMap.get(n.getNoticeId())));
 
+        // 루프를 돌면서 컬렉션 추가
+        Map<Long, List<AttachmentDto>> attachmentMap = findAttachmentMap(NoticeIds);
+        noticePageDtos.forEach(n -> n.setAttachments(attachmentMap.get(n.getNoticeId())));
+
         return noticePageDtos;
     }
 
@@ -135,6 +145,14 @@ public class NoticeService {
                 .collect(Collectors.toMap(
                         CountCommentOfNoticeDto::getNoticeId,
                         CountCommentOfNoticeDto::getNumberOfComments));
+    }
+
+    private Map<Long, List<AttachmentDto>> findAttachmentMap(List<Long> NoticeIds) {
+        List<AttachmentDto> attachmentDtos = attachmentRepository.findAttachmentsByNoticeIds(NoticeIds);
+
+        // 첨부파일의 아이디를 맵으로 저장
+        return attachmentDtos.stream()
+                .collect(Collectors.groupingBy(AttachmentDto::getNoticeId));
     }
 
 

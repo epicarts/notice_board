@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
@@ -49,15 +48,15 @@ public class FileS3Service implements FileService {
     }
 
     public String getFileUrl(String fileName) {
-        return amazonS3Client.getUrl(bucket,fileName).toString();
+        return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
 
     // MultipartFile 파일 객체로 리턴
     private Optional<File> convert(MultipartFile file) throws IOException {
         File convertFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
-        FileOutputStream fos = new FileOutputStream( convertFile );
-        fos.write( file.getBytes() );
+        FileOutputStream fos = new FileOutputStream(convertFile);
+        fos.write(file.getBytes());
         fos.close();
         return Optional.of(convertFile);
     }

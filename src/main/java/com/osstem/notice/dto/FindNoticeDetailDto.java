@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -11,7 +12,6 @@ public class FindNoticeDetailDto {
     private Long noticeId;
     private String title;
     private String content;
-    private String attachmentUrl;
     private String author;
     private Long views;
     private Long numberOfComment;
@@ -20,13 +20,13 @@ public class FindNoticeDetailDto {
     private LocalDateTime created;
 
     private List<CommentsDtoQuery> comments;
+    private List<AttachmentDto> attachments = new ArrayList<>();
 
-    public FindNoticeDetailDto(Long noticeId, String title, String content, String attachmentUrl,
+    public FindNoticeDetailDto(Long noticeId, String title, String content,
                                LocalDateTime created, String author, Long views) {
         this.noticeId = noticeId;
         this.title = title;
         this.content = content;
-        this.attachmentUrl = attachmentUrl;
         this.created = created;
         this.author = author;
         this.views = views;
