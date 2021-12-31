@@ -10,6 +10,11 @@ import java.util.List;
 
 @Entity
 @Getter
+@Table(indexes = {
+        @Index(columnList = "userId"),
+        @Index(columnList = "isNotice"),
+        @Index(columnList = "title"),
+        @Index(columnList = "content")})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)  // 외부 패키지에서 new Notice()를 접근하지 못하게 함. Setter 노출 위험요소 제거
 public class Notice extends BaseTime {
     @Id
@@ -33,7 +38,7 @@ public class Notice extends BaseTime {
     private String content;
 
     @Convert(converter = BooleanToYNConverter.class)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1)
     private Boolean isNotice;
 
     @Column(nullable = false)

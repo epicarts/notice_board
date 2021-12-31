@@ -21,10 +21,10 @@ public class Attachment extends BaseTime {
     @JoinColumn(name = "notice_id", nullable = false)
     private Notice notice;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 3000, unique = true)
     private String filePath;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 260)
     private String OriginalFilename;
 
     @Builder // 빌더 패턴으로 객체 초기화

@@ -6,18 +6,20 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
+@Table(indexes = {
+        @Index(columnList = "name"),
+        @Index(columnList = "isDelete"),
+        @Index(columnList = "role"),
+        @Index(columnList = "email", unique = true)})
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class User extends BaseTime {
     @Id
-    @Column
+    @Column(unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
@@ -31,7 +33,7 @@ public class User extends BaseTime {
     private String division;
 
     @Convert(converter = BooleanToYNConverter.class)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1)
     private Boolean isDelete;
 
     @Enumerated(value = EnumType.STRING)

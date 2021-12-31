@@ -6,6 +6,9 @@ import lombok.*;
 
 import javax.persistence.*;
 
+@Table(indexes = {
+        @Index(columnList = "userId"),
+        @Index(columnList = "isDeleted")})
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -26,7 +29,7 @@ public class Comment extends BaseTime {
     private String content;
 
     @Convert(converter = BooleanToYNConverter.class)
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1)
     private Boolean isDeleted;
 
     @Column(nullable = false)
