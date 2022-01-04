@@ -12,6 +12,8 @@ services:
       MYSQL_DATABASE: notice
     ports:
       - 3306:3306
+    volumes:
+      - /c/docker:/var/lib/mysql
   adminer:
     image: adminer
     restart: always

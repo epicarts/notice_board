@@ -3,20 +3,24 @@ package com.osstem.notice.domain.board;
 import com.osstem.notice.domain.common.BaseTime;
 import com.osstem.notice.domain.common.BooleanToYNConverter;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @Table(indexes = {
         @Index(columnList = "userId"),
         @Index(columnList = "isNotice"),
         @Index(columnList = "title"),
         @Index(columnList = "content")})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)  // 외부 패키지에서 new Notice()를 접근하지 못하게 함. Setter 노출 위험요소 제거
-public class Notice extends BaseTime {
+public class Notice {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +47,11 @@ public class Notice extends BaseTime {
 
     @Column(nullable = false)
     private Long view;
+
+
+    private LocalDateTime created;
+
+    private LocalDateTime updated;
 
     @Builder // 빌더 패턴으로 객체 초기화. Setter 노출 최소화
     public Notice(String title, String content, Boolean isNotice, Long view, Long UserId) {

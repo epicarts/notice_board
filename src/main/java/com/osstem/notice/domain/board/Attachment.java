@@ -4,6 +4,7 @@ import com.osstem.notice.domain.common.BaseTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @Getter
+@Setter
 public class Attachment extends BaseTime {
     @Id
     @Column
