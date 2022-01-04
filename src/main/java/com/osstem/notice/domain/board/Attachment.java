@@ -21,7 +21,7 @@ public class Attachment extends BaseTime {
     @JoinColumn(name = "notice_id", nullable = false)
     private Notice notice;
 
-    @Column(nullable = false, length = 3000, unique = true)
+    @Column(nullable = false, length = 3000)
     private String filePath;
 
     @Column(nullable = false, length = 260)
