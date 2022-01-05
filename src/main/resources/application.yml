@@ -13,11 +13,11 @@ spring:
     database: mysql
     #    generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
     properties:
       hibernate:
         show_sql: true
-        format_sql: true
+#        format_sql: true
   profiles:
     # application-credentials 파일 포함
     include:

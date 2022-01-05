@@ -24,16 +24,16 @@ public class InitDb {
 
     @PostConstruct
     public void init() {
-        initService.dbInit1();
-        initService.dbInit2();
-
-        for (int i = 0; i < 200; i++) {
-            initService.noCommentNotice(i);
-        }
-
-        for (int i = 0; i < 3; i++) {
-            initService.noticeByNotice(i);
-        }
+//        initService.dbInit1();
+//        initService.dbInit2();
+//
+//        for (int i = 0; i < 200; i++) {
+//            initService.noCommentNotice(i);
+//        }
+//
+//        for (int i = 0; i < 3; i++) {
+//            initService.noticeByNotice(i);
+//        }
     }
 
     @Component
