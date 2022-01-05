@@ -13,7 +13,8 @@ services:
     ports:
       - 3306:3306
     volumes:
-      - /c/docker:/var/lib/mysql
+#      - /c/docker:/var/lib/mysql
+      - mariadb-db:/var/lib/mysql
   adminer:
     image: adminer
     restart: always
