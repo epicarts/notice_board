@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.osstem.notice.mapper.NoticeMapper">
+<!--    <resultMap id="CommentMap" type="comment">-->
+<!--        <result property="commentId" column="comment_id"/>-->
+<!--        <result property="content" column="content"/>-->
+<!--        <result property="division" column="division"/>-->
+<!--        <result property="author" column="author"/>-->
+<!--        <result property="created" column="created"/>-->
+<!--        <result property="isDeleted" column="is_deleted"/>-->
+<!--        <result property="parent_comment_id" column="parent_comment_id"/>-->
+<!--    </resultMap>-->
+
+<!--    <resultMap id="AttachmentMap" type="AttachmentMapperDto">-->
+<!--        <result property="attachmentId" column="attachment_id"/>-->
+<!--        <result property="originalFileName" column="original_fileName"/>-->
+<!--        <result property="fileUrl" column="file_path"/>-->
+<!--        <result property="noticeId" column="notice_id"/>-->
+<!--    </resultMap>-->
+
+    <resultMap id="noticeDetailMap" type="NoticeDetailMapperDto">
+        <result property="noticeId" column="notice_id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="author" column="author"/>
+        <result property="views" column="view"/>
+        <result property="created" column="created"/>
+<!--        <collection property="attachments" resultMap="AttachmentMap"/>-->
+    </resultMap>
+
+    <select id="selectNoticeDetail" resultType="NoticeDetailMapperDto" >
+        SELECT
+            n.notice_id,
+            n.title,
+            n.content,
+            n.view
+        FROM
+            notice n
+        WHERE
+            n.notice_id = #{noticeId}
+    </select>
+
+<!--    &lt;!&ndash; notice_id 가 중복? 하나로 할경우 어떻게 처리 되지  &ndash;&gt;-->
+<!--    <select id="selectNoticeDetail" resultMap="noticeDetailMap">-->
+<!--        SELECT-->
+<!--            n.notice_id,-->
+<!--            n.title,-->
+<!--            n.content,-->
+<!--            n.view,-->
+<!--            n.created,-->
+<!--            u.author,-->
+<!--            a.attachment_id,-->
+<!--            a.original_fileName,-->
+<!--            a.file_path-->
+<!--        FROM-->
+<!--            notice n-->
+<!--        LEFT JOIN-->
+<!--            attachment a ON n.notice_id = a.notice_id-->
+<!--        INNER JOIN-->
+<!--            user u ON u.user_id = n.user_id-->
+<!--        WHERE-->
+<!--            n.notice_id = #{noticeId}-->
+<!--    </select>-->
+
+<!--    &lt;!&ndash;  comments 조회   &ndash;&gt;-->
+<!--    <select id="getCommentListById" resultType="AttachmentMap">-->
+<!--        SELECT commentId-->
+<!--        FROM comment c-->
+<!--                 INNER JOIN-->
+<!--             user u ON u.id = c.user_id-->
+<!--        WHERE c.notice_id = #{noticeId}-->
+<!--    </select>-->
+
+</mapper>

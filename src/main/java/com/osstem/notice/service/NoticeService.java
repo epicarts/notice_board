@@ -5,10 +5,12 @@ import com.osstem.notice.domain.board.Comment;
 import com.osstem.notice.domain.board.Notice;
 import com.osstem.notice.dto.AttachmentDto;
 import com.osstem.notice.dto.CommentsDtoQuery;
+import com.osstem.notice.dto.mapper.NoticeDetailDto;
 import com.osstem.notice.dto.query.CountCommentOfNoticeDto;
 import com.osstem.notice.dto.FindNoticeDetailDto;
 import com.osstem.notice.dto.query.ListNoticeDto;
 import com.osstem.notice.dto.UpdateNoticeDto;
+import com.osstem.notice.mapper.NoticeMapper;
 import com.osstem.notice.repository.AttachmentRepository;
 import com.osstem.notice.repository.CommentRepository;
 import com.osstem.notice.repository.NoticeRepository;
@@ -38,6 +40,8 @@ public class NoticeService {
     private final AttachmentRepository attachmentRepository;
 
     private final FileService fileService;
+
+    private final NoticeMapper noticeMapper;
 
     @Transactional
     public Long saveNotice(Notice notice) {
@@ -101,6 +105,11 @@ public class NoticeService {
         findNoticeDetailDto.setComments(parentComments);
 
         return findNoticeDetailDto;
+    }
+
+    public NoticeDetailDto findNoticeDetailAsMapper(Long noticeId) {
+        NoticeDetailDto noticeDetailDto = noticeMapper.selectNoticeDetail(noticeId);
+        return noticeDetailDto;
     }
 
     private void replaceDeleteComment(List<CommentsDtoQuery> comments, String deleteMessage) {
